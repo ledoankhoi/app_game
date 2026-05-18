@@ -1,69 +1,58 @@
-# CLAUDE.md - Hướng dẫn hành vi & Ngôn ngữ
+# CLAUDE.md — Hướng dẫn AI cho dự án Monopoly Game
 
-**Yêu cầu quan trọng nhất:** Luôn phản hồi, giải thích và trả lời bằng **tiếng Việt**, trừ khi mã nguồn hoặc các thuật ngữ kỹ thuật bắt buộc phải giữ nguyên tiếng Anh.
+## Ngôn ngữ
+- Luôn phản hồi và giải thích bằng **tiếng Việt**
+- Giữ nguyên thuật ngữ kỹ thuật tiếng Anh (tên class, method, package, v.v.)
 
-## Nguyên tắc hành vi (Behavioral Guidelines)
-Các hướng dẫn này ưu tiên sự thận trọng và chính xác hơn là tốc độ.
+## Dự án
+- Flutter + Flame engine game Monopoly
+- Chạy được trên: Chrome, Windows, Android, iOS
+- Cấu trúc MVC: `controllers/`, `models/`, `views/`, `data/`
 
-### 1. Suy nghĩ trước khi lập trình (Think Before Coding)
-* **Không giả định:** Nêu rõ các giả định của bạn. Nếu không chắc chắn, hãy hỏi.
-* **Làm rõ sự mơ hồ:** Nếu có nhiều cách hiểu, hãy trình bày tất cả thay vì tự ý chọn một cách.
-* **Đề xuất sự đơn giản:** Nếu có cách tiếp cận đơn giản hơn, hãy nói rõ. Sẵn sàng phản biện nếu yêu cầu quá phức tạp.
-* **Dừng lại khi chưa rõ:** Nếu có gì đó khó hiểu, hãy dừng lại và đặt câu hỏi cụ thể.
+## Kiến trúc
+```
+lib/
+  main.dart           — Entry point + Flutter overlay UI (HUD, dialogs)
+  game.dart           — AppGame (FlameGame): điều khiển luồng game
+  controllers/
+    game_controller.dart — Toàn bộ logic Monopoly (mua, thuê, jail, cards...)
+  models/
+    player.dart, tile.dart, card.dart
+  views/
+    board_view.dart   — Vẽ bàn 40 ô, token, ownership, houses (Canvas)
+  data/
+    board_data.dart   — 40 ô Monopoly chuẩn
+    cards_data.dart   — 28 thẻ Chance + Community Chest
+```
 
-### 2. Ưu tiên sự đơn giản (Simplicity First)
-* Chỉ viết lượng mã tối thiểu để giải quyết vấn đề. Không dự đoán tương lai.
-* Không thêm tính năng, sự trừu tượng hoặc cấu hình linh hoạt nếu không được yêu cầu.
-* Nếu có thể viết 50 dòng thay vì 200 dòng, hãy viết 50 dòng.
+## Quy tắc code
+- **Dart:** camelCase cho biến/hàm, PascalCase cho class
+- **Không thêm comments trừ khi cần giải thích logic phức tạp**
+- Ưu tiên code đơn giản, dễ đọc hơn tối ưu sớm
+- Chạy `flutter analyze` sau mỗi thay đổi, fix hết lỗi trước khi báo cáo
+- Nếu cần thêm package → thêm vào `pubspec.yaml` → chạy `flutter pub get`
 
-### 3. Thay đổi mang tính "phẫu thuật" (Surgical Changes)
-* Chỉ chạm vào những gì cần thiết. Chỉ dọn dẹp những gì do bạn tạo ra.
-* Không tự ý cải thiện định dạng, chú thích hoặc cấu trúc của các đoạn mã lân cận không liên quan.
-* Khớp với phong cách (style) hiện có của dự án.
-* **Dọn dẹp hệ quả:** Xóa bỏ các import/biến/hàm trở nên dư thừa **do thay đổi của bạn** tạo ra.
+## Luồng game (quan trọng)
+1. HUD = Flutter overlay (`overlayBuilderMap` trong `main.dart`)
+2. Board = Flame `PositionComponent` vẽ Canvas
+3. Logic = `GameController` thuần Dart, không phụ thuộc Flutter/Flame
+4. Khi thêm tính năng mới: cập nhật `GameController` trước → UI sau
 
-### 4. Thực hiện theo mục tiêu (Goal-Driven Execution)
-* Chuyển đổi nhiệm vụ thành các mục tiêu có thể kiểm chứng (Ví dụ: Viết test lỗi trước, sau đó viết code để pass test).
-* Đối với các nhiệm vụ nhiều bước, hãy nêu kế hoạch ngắn gọn:
-    1. [Bước] → Kiểm chứng: [Cách kiểm tra]
-    2. [Bước] → Kiểm chứng: [Cách kiểm tra]
+## Các lệnh thường dùng
+- `flutter analyze` — Kiểm tra lỗi
+- `flutter run -d chrome` — Chạy trên web
+- `flutter pub get` — Cập nhật dependencies
+- `flutter build apk` — Build Android
 
-## Cấu hình kỹ năng (Agent Skills)
-Dựa trên bộ kỹ năng của Matt Pocock:
-* **Issue tracker:** [Tóm tắt hệ thống quản lý task của bạn]. Xem `docs/agents/issue-tracker.md`.
-* **Triage labels:** [Tóm tắt các nhãn phân loại]. Xem `docs/agents/triage-labels.md`.
-* **Domain docs:** [Single-context hoặc Multi-context]. Xem `docs/agents/domain.md`.# CLAUDE.md - Hướng dẫn hành vi & Ngôn ngữ
+## Mô hình đang dùng
+- DeepSeek V4 Flash Free (qua opencode Zen) — model miễn phí
+- Context window hạn chế → ưu tiên surgical changes, không viết lại cả file
 
-**Yêu cầu quan trọng nhất:** Luôn phản hồi, giải thích và trả lời bằng **tiếng Việt**, trừ khi mã nguồn hoặc các thuật ngữ kỹ thuật bắt buộc phải giữ nguyên tiếng Anh.
+## Các tính năng đã hoàn thành
+Xem `docs/features.md` và `docs/roadmap.md` để biết chi tiết.
 
-## Nguyên tắc hành vi (Behavioral Guidelines)
-Các hướng dẫn này ưu tiên sự thận trọng và chính xác hơn là tốc độ.
-
-### 1. Suy nghĩ trước khi lập trình (Think Before Coding)
-* **Không giả định:** Nêu rõ các giả định của bạn. Nếu không chắc chắn, hãy hỏi.
-* **Làm rõ sự mơ hồ:** Nếu có nhiều cách hiểu, hãy trình bày tất cả thay vì tự ý chọn một cách.
-* **Đề xuất sự đơn giản:** Nếu có cách tiếp cận đơn giản hơn, hãy nói rõ. Sẵn sàng phản biện nếu yêu cầu quá phức tạp.
-* **Dừng lại khi chưa rõ:** Nếu có gì đó khó hiểu, hãy dừng lại và đặt câu hỏi cụ thể.
-
-### 2. Ưu tiên sự đơn giản (Simplicity First)
-* Chỉ viết lượng mã tối thiểu để giải quyết vấn đề. Không dự đoán tương lai.
-* Không thêm tính năng, sự trừu tượng hoặc cấu hình linh hoạt nếu không được yêu cầu.
-* Nếu có thể viết 50 dòng thay vì 200 dòng, hãy viết 50 dòng.
-
-### 3. Thay đổi mang tính "phẫu thuật" (Surgical Changes)
-* Chỉ chạm vào những gì cần thiết. Chỉ dọn dẹp những gì do bạn tạo ra.
-* Không tự ý cải thiện định dạng, chú thích hoặc cấu trúc của các đoạn mã lân cận không liên quan.
-* Khớp với phong cách (style) hiện có của dự án.
-* **Dọn dẹp hệ quả:** Xóa bỏ các import/biến/hàm trở nên dư thừa **do thay đổi của bạn** tạo ra.
-
-### 4. Thực hiện theo mục tiêu (Goal-Driven Execution)
-* Chuyển đổi nhiệm vụ thành các mục tiêu có thể kiểm chứng (Ví dụ: Viết test lỗi trước, sau đó viết code để pass test).
-* Đối với các nhiệm vụ nhiều bước, hãy nêu kế hoạch ngắn gọn:
-    1. [Bước] → Kiểm chứng: [Cách kiểm tra]
-    2. [Bước] → Kiểm chứng: [Cách kiểm tra]
-
-## Cấu hình kỹ năng (Agent Skills)
-Dựa trên bộ kỹ năng của Matt Pocock:
-* **Issue tracker:** [Tóm tắt hệ thống quản lý task của bạn]. Xem `docs/agents/issue-tracker.md`.
-* **Triage labels:** [Tóm tắt các nhãn phân loại]. Xem `docs/agents/triage-labels.md`.
-* **Domain docs:** [Single-context hoặc Multi-context]. Xem `docs/agents/domain.md`.
+## Khi gặp lỗi
+1. Chạy `flutter analyze` để xem danh sách lỗi
+2. Đọc kỹ thông báo lỗi
+3. Fix từng lỗi một
+4. Chạy lại `flutter analyze` để xác nhận

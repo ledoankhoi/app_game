@@ -1,0 +1,53 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "opencode/deepseek-v4-flash-free",
+  "instructions": ["AGENTS.md", "docs/architecture.md", "docs/features.md"],
+  "command": {
+    "analyze": {
+      "description": "Run flutter analyze to check for errors",
+      "prompt": "Run flutter analyze in the project root and report any issues found."
+    },
+    "run-web": {
+      "description": "Run the game in Chrome",
+      "prompt": "Run the Flutter project on Chrome for web testing."
+    },
+    "run-win": {
+      "description": "Run the game on Windows",
+      "prompt": "Run the Flutter project on Windows desktop."
+    },
+    "test": {
+      "description": "Run Flutter tests",
+      "prompt": "Run all Flutter tests in the project."
+    },
+    "build-web": {
+      "description": "Build for web deployment",
+      "prompt": "Build the Flutter project for web release."
+    },
+    "docs": {
+      "description": "Open project documentation",
+      "prompt": "Read the docs/ directory and summarize all documentation files and their purposes for the user."
+    }
+  },
+  "agent": {
+    "flutter-dev": {
+      "description": "Flutter & Flame developer for building Monopoly game features",
+      "mode": "primary",
+      "model": "opencode/deepseek-v4-flash-free"
+    }
+  },
+  "skills": {
+    "paths": [".opencode/skills"]
+  },
+  "permission": {
+    "edit": "allow",
+    "bash": {
+      "flutter pub *": "allow",
+      "flutter analyze": "allow",
+      "flutter run *": "allow",
+      "flutter build *": "allow",
+      "flutter test": "allow",
+      "git *": "allow",
+      "*": "ask"
+    }
+  }
+}
